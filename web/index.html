@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C Dili 30 Günlük İleri Eğitim Portalı</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- SOL PANEL: 150 DERSLİK NAVİGASYON (SIDEBAR) -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <div class="app-brand">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+          </svg>
+          <span class="brand-name">C Masterclass</span>
+          <div class="header-top-btns">
+            <button id="btn-toggle-theme" class="btn btn-icon" title="Tema Değiştir (Koyu/Açık)">🌙</button>
+            <button id="btn-open-achievements" class="btn btn-icon" title="Başarımlar ve Sertifika">🏆</button>
+            <button id="btn-export-notes" class="btn btn-icon" title="Tüm Ders Notlarını İndir (Markdown)">📥</button>
+          </div>
+        </div>
+        <div class="progress-box">
+          <div class="progress-info">
+            <span id="progress-text">%0 Tamamlandı</span>
+            <span id="progress-count">0/150 Ders</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Ders ara veya filtrele... (Örn: malloc, pointer)" />
+        </div>
+      </div>
+
+      <div class="accordion-container" id="accordion">
+        <!-- JS ile 30 Gün ve 150 Ders Buraya Doldurulacak -->
+      </div>
+    </aside>
+
+    <!-- SAĞ TARAF: 2 SÜTUNLU YAN YANA İDE DÜZENİ -->
+    <main id="main-content">
+      <div class="split-wrapper">
+        
+        <!-- SOL SÜTUN: OKUMA, TEORİ & QUIZ PANELSİ -->
+        <div id="left-column" class="split-column">
+          <!-- SEKMELER (TABS) -->
+          <div class="column-tab-bar">
+            <button id="tab-btn-theory" class="tab-btn active" onclick="switchLeftTab('theory')">
+              📘 Teori Notları
+            </button>
+            <button id="tab-btn-quiz" class="tab-btn" onclick="switchLeftTab('quiz')">
+              🧠 Günün Quizi (50 Soru)
+            </button>
+            <button id="tab-btn-snippets" class="tab-btn" onclick="switchLeftTab('snippets')">
+              ⚡ Şablon Kütüphanesi
+            </button>
+            <button id="tab-btn-cheatsheet" class="tab-btn" onclick="switchLeftTab('cheatsheet')">
+              📚 C Rehberi
+            </button>
+          </div>
+
+          <!-- TAB 1: TEORİ NOTLARI -->
+          <div id="tab-content-theory" class="tab-content active">
+            <div class="section-header">
+              <div class="lesson-badge-wrapper">
+                <span id="current-day-badge" class="badge day-badge">GÜN 1</span>
+                <span id="current-lesson-id" class="badge lesson-badge">1.1</span>
+                <h2 id="current-lesson-title">Ders Yükleniyor...</h2>
+              </div>
+              <div class="theory-actions">
+                <button id="btn-load-code" class="btn btn-secondary">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  Editöre Aktar
+                </button>
+                <button id="btn-toggle-completed" class="btn btn-outline">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Tamamlandı
+                </button>
+              </div>
+            </div>
+            <div id="theory-content" class="markdown-body">
+              <!-- Ders Notu Markdown Çıktısı -->
+            </div>
+          </div>
+
+          <!-- TAB 2: GÜNÜN QUIZI (50 SORU INTEGRATED TAB) -->
+          <div id="tab-content-quiz" class="tab-content">
+            <div class="quiz-tab-header">
+              <div class="quiz-header-title">
+                <h3 id="quiz-tab-title">🧠 Günün Quizi (50 Soru)</h3>
+                <span id="quiz-score-badge" class="quiz-badge">Skor: 0 / 50</span>
+              </div>
+              <div class="quiz-nav-bar">
+                <button id="quiz-prev-btn" class="btn btn-outline btn-small">◄ Önceki</button>
+                <span id="quiz-counter-text">Soru 1 / 50</span>
+                <select id="quiz-jump-select" class="quiz-select"></select>
+                <button id="quiz-next-btn" class="btn btn-outline btn-small">Sonraki ►</button>
+              </div>
+            </div>
+            <div id="quiz-tab-body" class="tab-pane-body">
+              <!-- Soru Kartı -->
+            </div>
+          </div>
+
+          <!-- TAB 3: ŞABLON KÜTÜPHANESİ -->
+          <div id="tab-content-snippets" class="tab-content">
+            <div class="tab-pane-header">
+              <h3>⚡ Hazır Algoritma ve Veri Yapısı Şablonları</h3>
+            </div>
+            <div id="snippets-tab-body" class="tab-pane-body"></div>
+          </div>
+
+          <!-- TAB 4: C KÜTÜPHANE REHBERİ -->
+          <div id="tab-content-cheatsheet" class="tab-content">
+            <div class="tab-pane-header">
+              <h3>📚 C Standart Kütüphaneleri Hızlı Referans</h3>
+            </div>
+            <div id="cheatsheet-tab-body" class="tab-pane-body"></div>
+          </div>
+        </div>
+
+        <!-- DİKEY AYIRICI TUTAMAÇ (DRAGGABLE RESIZER HANDLE) -->
+        <div id="column-resizer" class="resizer-handle" title="Sütun Genişliğini Ayarlamak İçin Sürükleyin"></div>
+
+        <!-- SAĞ SÜTUN: KODLAMA, EDİTÖR, RAM & TERMINAL -->
+        <div id="right-column" class="split-column">
+          <!-- ÜST: KOD EDİTÖRÜ VE RAM PANELSİ -->
+          <section id="editor-section">
+            <div class="editor-toolbar">
+              <div class="toolbar-title">
+                <span class="file-icon">C</span>
+                <span>main.c (C99 Standart)</span>
+                <span class="shortcut-hint">⌨️ F9/F10/F11/F5 | Tab | Ctrl+/ | Ctrl+D</span>
+                <span id="autosave-indicator" class="autosave-indicator"></span>
+              </div>
+              <div class="toolbar-actions">
+                <div class="font-zoom-controls">
+                  <button id="btn-zoom-out" class="btn btn-icon" title="Yazı Boyutunu Küçült">A-</button>
+                  <button id="btn-zoom-in" class="btn btn-icon" title="Yazı Boyutunu Büyüt">A+</button>
+                </div>
+                <button id="btn-analyze-code" class="btn btn-small" title="Statik Bellek Sızıntısı & Linter Taraması">
+                  🔬 Linter Taraması
+                </button>
+                <button id="btn-toggle-ram" class="btn btn-small" title="Canlı RAM Haritası (Stack & Heap)">
+                  🔍 RAM Haritası
+                </button>
+                <button id="btn-format-code" class="btn btn-icon" title="Kodu Otomatik Biçimlendir">
+                  ✨ Biçimlendir
+                </button>
+                <button id="btn-reset-code" class="btn btn-icon" title="Kodu Sıfırla">
+                  Sıfırla
+                </button>
+                <button id="btn-clear-code" class="btn btn-icon" title="Temizle">
+                  Temizle
+                </button>
+                <button id="btn-run-code" class="btn btn-primary">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  Kodu Çalıştır (F9/F10/F5)
+                </button>
+              </div>
+            </div>
+
+            <div class="editor-main-wrapper">
+              <div class="editor-container">
+                <div id="line-numbers" class="line-gutter">1</div>
+                <div class="editor-wrapper">
+                  <pre id="code-highlight" class="code-highlight" aria-hidden="true"><code id="code-highlight-content"></code></pre>
+                  <textarea id="code-editor" spellcheck="false" placeholder="C kodunuzu buraya yazın..."></textarea>
+                </div>
+              </div>
+
+              <!-- CANLI RAM HARİTASI (STACK & HEAP PANELSİ) -->
+              <div id="ram-inspector-panel" class="ram-panel hidden">
+                <div class="ram-header">
+                  <span>🧠 Canlı Bellek (Stack & Heap) Haritası</span>
+                  <button id="btn-close-ram" class="close-btn">&times;</button>
+                </div>
+                <div id="ram-table-container">
+                  <!-- RAM Değişken ve Heap Blokları -->
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ALT: TERMINAL & STDIN -->
+          <section id="terminal-section">
+            <div class="terminal-header">
+              <div class="terminal-title">
+                <span class="status-dot green" id="compiler-status-dot"></span>
+                <span id="compiler-status-text">Derleyici: Yükleniyor...</span>
+              </div>
+              <div class="terminal-meta" id="terminal-exec-info">
+                Çıktı Paneli
+              </div>
+            </div>
+            <div id="terminal-body" class="terminal-output">
+              <span class="term-dim">C kodunuzu derlemek ve çalıştırmak için (F9, F10 veya F5) tuşuna basın...</span>
+            </div>
+            <div class="terminal-input-bar">
+              <span class="prompt-symbol">&gt;</span>
+              <input type="text" id="stdin-input" placeholder="Program veri bekliyorsa buraya girdi yazıp Enter'a basın (scanf/getchar)..." />
+              <button id="btn-send-stdin" class="btn btn-small">Gönder</button>
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL: BAŞARIMLAR & SERTİFİKA OVERLAY -->
+  <div id="achievements-modal" class="modal-overlay hidden">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <h3>🏆 Başarımlar ve C Masterclass Sertifikası</h3>
+        <button id="btn-close-achievements" class="close-btn">&times;</button>
+      </div>
+      <div id="achievements-modal-body" class="modal-body">
+        <div class="achievements-grid" id="achievements-grid">
+          <!-- JS ile dinamik olarak doldurulacak -->
+        </div>
+
+        <hr class="md-hr">
+
+        <div class="certificate-box" id="certificate-box">
+          <div class="cert-border">
+            <div class="cert-title">C DİLİ MASTERCLASS BAŞARI SERTİFİKASI</div>
+            <div class="cert-subtitle" id="cert-subtitle">Bu belge, 30 Günlük (150 Derslik) İleri C Programlama Eğitimi ve Derleyici Uygulamasını başarıyla takip eden kullanıcıya sunulmuştur.</div>
+            <div class="cert-badge-stamp" id="cert-badge-stamp">C PROGRAMMING CERTIFIED</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: KISAYOLLAR -->
+  <div id="shortcuts-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>⌨️ Klavye Kısayolları</h3>
+        <button id="btn-close-shortcuts" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="shortcuts-grid" id="shortcuts-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
